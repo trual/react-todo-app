@@ -19,6 +19,7 @@ function TodoApp () {
     const [newTodo, setNewTodo] = useState(initialNewTodo)
     const [idCount , setIdCount] = useState(0)
     const [completedFilter, setCompletedFilter] = useState(false)
+    const [incompleteFilter, setIncompleteFilter] = useState(false)
 
     function handleInputChange(e) {
         setNewTodo({...newTodo, task: e.target.value })
@@ -64,7 +65,10 @@ function TodoApp () {
 
     function handleCompletedFilter() {
         setCompletedFilter(!completedFilter)
-        console.log(completedFilter)
+    }
+
+    function handleIncompleteFilter() {
+        setIncompleteFilter(!incompleteFilter)
     }
 
     useEffect(() => {
@@ -75,8 +79,12 @@ function TodoApp () {
             tempList = tempList.filter((todo) => todo.completed === completedFilter )
         }
 
+        if (incompleteFilter) {
+            tempList = tempList.filter((todo) => todo.completed !== incompleteFilter)
+        }
+
         setDisplayListOfTodos(tempList)
-    }, [listOfTodos, completedFilter])
+    }, [listOfTodos, completedFilter, incompleteFilter])
 
     return <div>
         <ul>
@@ -95,6 +103,7 @@ function TodoApp () {
         </form>
             <h3>Filters</h3>
         <button className={completedFilter ? "selectedButton" : null} onClick={handleCompletedFilter}>completed</button>
+        <button className={incompleteFilter ? "selectedButton" : null} onClick={handleIncompleteFilter}>incomplete</button>
     </div>
 }
 
